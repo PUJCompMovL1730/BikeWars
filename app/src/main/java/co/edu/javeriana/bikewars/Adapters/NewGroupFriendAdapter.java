@@ -18,17 +18,21 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.List;
 
+import co.edu.javeriana.bikewars.Interfaces.NewGroupListener;
 import co.edu.javeriana.bikewars.Logic.Entities.dbObservable;
-import co.edu.javeriana.bikewars.Logic.UserData;
 import co.edu.javeriana.bikewars.R;
 
 /**
  * Created by Todesser on 30/10/2017.
  */
 
-public class AddFriendAdapter extends ArrayAdapter<dbObservable>{
-    public AddFriendAdapter(@NonNull Context context, int resource, @NonNull List<dbObservable> objects) {
+public class NewGroupFriendAdapter extends ArrayAdapter<dbObservable>{
+
+    private NewGroupListener ui;
+
+    public NewGroupFriendAdapter(@NonNull Context context, int resource, @NonNull List<dbObservable> objects, NewGroupListener ui) {
         super(context, resource, objects);
+        this.ui = ui;
     }
 
     @NonNull
@@ -37,12 +41,12 @@ public class AddFriendAdapter extends ArrayAdapter<dbObservable>{
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (null == convertView) {
             convertView = inflater.inflate(
-                    R.layout.add_friend_layout, parent, false);
+                    R.layout.new_group_friend, parent, false);
         }
         final ImageView photo = (ImageView) convertView.findViewById(R.id.newGroupFriendPhoto);
         final Bitmap[] photoBit = new Bitmap[1];
-        TextView name = (TextView) convertView.findViewById(R.id.addFriendName);
-        ImageButton addFriend = (ImageButton) convertView.findViewById(R.id.addFriendAdd);
+        TextView name = (TextView) convertView.findViewById(R.id.newGroupFriendName);
+        ImageButton addFriend = (ImageButton) convertView.findViewById(R.id.newGroupFriendAdd);
         final dbObservable model = getItem(position);
         FirebaseStorage.getInstance().getReferenceFromUrl(model.getPhoto()).getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
@@ -56,7 +60,7 @@ public class AddFriendAdapter extends ArrayAdapter<dbObservable>{
         addFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserData.getInstance().addFriend(model.getUserID());
+                ui.friendAdded(model);
             }
         });
         return convertView;

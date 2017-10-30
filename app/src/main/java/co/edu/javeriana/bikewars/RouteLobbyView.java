@@ -50,6 +50,7 @@ public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallb
             }
         });
         UserData.getInstance().initialize();
+        MapData.getInstance();
         mAuth = FirebaseAuth.getInstance();
         mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.mainMap);

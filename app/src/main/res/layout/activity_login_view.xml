@@ -21,16 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.4"
-                android:gravity="center"
-                android:text="Usuario"
-                android:textAlignment="gravity"
-                android:textSize="24sp"
-                android:textStyle="bold" />
-
             <EditText
                 android:id="@+id/loginUserTxt"
                 android:layout_width="0dp"
@@ -46,16 +36,6 @@
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.4"
-                android:gravity="center"
-                android:text="Contraseña"
-                android:textAlignment="gravity"
-                android:textSize="24sp"
-                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/loginPassTxt"

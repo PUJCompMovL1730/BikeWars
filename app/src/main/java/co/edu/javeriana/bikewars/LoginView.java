@@ -1,21 +1,19 @@
 package co.edu.javeriana.bikewars;
 
+import android.Manifest;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.ArrayList;
 
 public class LoginView extends AppCompatActivity {
 
@@ -43,7 +41,25 @@ public class LoginView extends AppCompatActivity {
     }
 
     public void login(View context){
-        mAuth.signInWithEmailAndPassword(userTxt.getText().toString(), passTxt.getText().toString());
+        if(!userTxt.getText().toString().isEmpty() || !passTxt.getText().toString().isEmpty()){
+            TedPermission.with(getBaseContext())
+                    .setPermissionListener(new PermissionListener() {
+                @Override
+                public void onPermissionGranted() {
+                    mAuth.signInWithEmailAndPassword(userTxt.getText().toString(), passTxt.getText().toString());
+                }
+
+                @Override
+                public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+
+                }
+            })
+                    .setDeniedMessage("La aplicacion necesita permisos de ubicacion")
+                    .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+                    .check();
+        }else{
+            Toast.makeText(this, "Ingrese los datos completos", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void newUserLaunch(View view){

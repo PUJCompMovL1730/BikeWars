@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -21,7 +22,7 @@ import co.edu.javeriana.bikewars.Logic.UserData;
 
 public class FriendsLobby extends AppCompatActivity implements FriendListener{
 
-    private ListView list;
+    private ListView list, groups;
     private List<dbObservable> listData;
 
     @Override
@@ -29,6 +30,7 @@ public class FriendsLobby extends AppCompatActivity implements FriendListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_lobby);
         list = (ListView) findViewById(R.id.friendsViewList);
+        groups = (ListView) findViewById(R.id.friendsViewGroups);
         UserData.getInstance().addFriendListener(this);
         populateList(UserData.getInstance().getUser().getFriends());
     }
@@ -52,6 +54,7 @@ public class FriendsLobby extends AppCompatActivity implements FriendListener{
 
             }
         });
+        groups.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, UserData.getInstance().getUser().getGroups()));
     }
 
     public void newGroup(View view){

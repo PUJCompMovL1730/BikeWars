@@ -5,8 +5,8 @@ android {
     buildToolsVersion "27.0.0"
     defaultConfig {
         applicationId "co.edu.javeriana.bikewars"
-        minSdkVersion 22
-        targetSdkVersion 22
+        minSdkVersion 23
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

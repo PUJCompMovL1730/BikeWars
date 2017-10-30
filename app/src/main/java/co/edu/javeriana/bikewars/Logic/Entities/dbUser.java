@@ -77,6 +77,9 @@ public class dbUser {
     }
 
     public List<String> getGroups() {
+        if(groups==null){
+            groups = new ArrayList<>();
+        }
         return groups;
     }
 

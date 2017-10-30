@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.edu.javeriana.bikewars.Interfaces.FriendListener;
+import co.edu.javeriana.bikewars.Logic.Entities.dbGroup;
 import co.edu.javeriana.bikewars.Logic.Entities.dbTravel;
 import co.edu.javeriana.bikewars.Logic.Entities.dbUser;
 
@@ -117,5 +118,13 @@ public class UserData {
         for(FriendListener listener: friendListeners){
             listener.UpdateFriends(user.getFriends());
         }
+    }
+
+    public void addGroup(dbGroup grupo){
+        DatabaseReference ref = db.getReference(groupsRoot).push();
+        String groupID = ref.getKey();
+        ref.setValue(grupo);
+        user.getGroups().add(groupID);
+        refUser.child("groups").setValue(user.getGroups());
     }
 }
