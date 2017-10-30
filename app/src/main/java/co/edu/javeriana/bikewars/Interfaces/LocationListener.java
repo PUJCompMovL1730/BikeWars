@@ -11,5 +11,5 @@ import co.edu.javeriana.bikewars.Logic.Route;
  */
 
 public interface LocationListener {
-    void updateLocation(MarkerOptions location, List<MarkerOptions> markers, Route route);
+    void updateLocation(MarkerOptions location, List<MarkerOptions> markers, Route route, List<MarkerOptions> globals);
 }

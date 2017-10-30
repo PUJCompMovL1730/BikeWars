@@ -113,7 +113,7 @@ public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallb
     }
 
     @Override
-    public void updateLocation(MarkerOptions location, List<MarkerOptions> markers, Route route) {
+    public void updateLocation(MarkerOptions location, List<MarkerOptions> markers, Route route, List<MarkerOptions> globals) {
         map.clear();
         if(location!=null){
             if(ubication==null){
@@ -128,6 +128,9 @@ public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallb
             map.addMarker(route.getEnd());
         }
         for(MarkerOptions mark: markers){
+            map.addMarker(mark);
+        }
+        for(MarkerOptions mark: globals){
             map.addMarker(mark);
         }
     }

@@ -10,12 +10,17 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import co.edu.javeriana.bikewars.Interfaces.LocationListener;
 import co.edu.javeriana.bikewars.Interfaces.ObservableListener;
+import co.edu.javeriana.bikewars.Logic.Entities.dbCommercialMarker;
 import co.edu.javeriana.bikewars.Logic.Entities.dbObservable;
 import co.edu.javeriana.bikewars.Logic.Entities.dbTravel;
 import co.edu.javeriana.bikewars.RouteLobbyView;
@@ -41,6 +46,7 @@ public class MapData implements ObservableListener{
     //Attributes
     private dbObservable ubication;
     private List<MarkerOptions> markers;
+    private List<MarkerOptions> globalMarkers;
     private List<LocationListener> listeners;
     private Route route;
     private dbTravel travel;
@@ -51,6 +57,7 @@ public class MapData implements ObservableListener{
         provider = new ReactiveLocationProvider(RouteLobbyView.context);
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+        loadGlobalMarkers();
     }
 
     public static MapData getInstance(){
@@ -58,6 +65,28 @@ public class MapData implements ObservableListener{
             instance = new MapData();
         }
         return instance;
+    }
+
+    private void loadGlobalMarkers(){
+        globalMarkers = new ArrayList<>();
+        FirebaseDatabase.getInstance().getReference(UserData.markersRoot).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot marker: dataSnapshot.getChildren()){
+                    dbCommercialMarker markerData = marker.getValue(dbCommercialMarker.class);
+                    globalMarkers.add(new MarkerOptions()
+                            .title(markerData.getTitle())
+                            .snippet(markerData.getDescription())
+                            .position(new LatLng(markerData.getLatitude(), markerData.getLongitude()))
+                    );
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public dbObservable getUbication(){
@@ -122,7 +151,7 @@ public class MapData implements ObservableListener{
         synchronized (listeners){
                 for(LocationListener listener: listeners){
                     synchronized (ubication){
-                        listener.updateLocation(observableMark(ubication), markers, route);
+                        listener.updateLocation(observableMark(ubication), markers, route, globalMarkers);
                     }
                 }
         }
