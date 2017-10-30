@@ -141,6 +141,7 @@ public class MapData implements ObservableListener{
         travel=null;
         markers.clear();
         route=null;
+        updateListeners();
         Toast.makeText(RouteLobbyView.context, "Recorrido Terminado", Toast.LENGTH_SHORT).show();
     }
 

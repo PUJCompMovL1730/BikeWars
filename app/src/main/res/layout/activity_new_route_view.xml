@@ -100,19 +100,12 @@
 
         <Button
             android:id="@+id/InitiateBtn"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:onClick="mainLaunch"
             android:text="Iniciar" />
 
-        <Button
-            android:id="@+id/ShareBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:onClick="shareLaunch"
-            android:text="Compartir" />
     </LinearLayout>
 
     <fragment

@@ -162,16 +162,21 @@
                 app:srcCompat="@android:drawable/btn_star_big_on" />
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/floatingActionButton2"
+                android:id="@+id/lobbyEndBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="164dp"
+                android:layout_marginTop="8dp"
                 android:backgroundTint="#DA4336"
                 android:clickable="true"
                 android:visibility="invisible"
                 app:fab_size="normal"
-                app:srcCompat="@drawable/cancel"
-                tools:layout_editor_absoluteX="164dp"
-                tools:layout_editor_absoluteY="454dp" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.982"
+                app:srcCompat="@drawable/cancel" />
 
         </android.support.constraint.ConstraintLayout>
 

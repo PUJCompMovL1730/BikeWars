@@ -1,9 +1,8 @@
 package co.edu.javeriana.bikewars;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,7 +22,7 @@ public class MainView extends AppCompatActivity {
     }
 
     public void friendsLaunch(View view){
-        startActivity(new Intent(this, FriendsView.class));
+        startActivity(new Intent(this, FriendsLobby.class));
     }
 
     public void routeLaunch(View view){

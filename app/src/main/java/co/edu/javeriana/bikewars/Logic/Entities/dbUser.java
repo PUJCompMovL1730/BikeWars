@@ -58,6 +58,9 @@ public class dbUser {
     }
 
     public List<String> getFriends() {
+        if(friends==null){
+            friends = new ArrayList<>();
+        }
         return friends;
     }
 

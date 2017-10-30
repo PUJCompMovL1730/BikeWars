@@ -11,6 +11,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.edu.javeriana.bikewars.Interfaces.FriendListener;
 import co.edu.javeriana.bikewars.Logic.Entities.dbTravel;
 import co.edu.javeriana.bikewars.Logic.Entities.dbUser;
 
@@ -32,6 +33,7 @@ public class UserData {
     private FirebaseDatabase db;
     private DatabaseReference refUser;
     private dbUser user;
+    private List<FriendListener> friendListeners;
 
 
     public static UserData getInstance() {
@@ -41,6 +43,7 @@ public class UserData {
     private UserData() {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance();
+        friendListeners = new ArrayList<>();
     }
 
     public void initialize(){
@@ -59,6 +62,10 @@ public class UserData {
                 }
             });
         }
+    }
+
+    public DatabaseReference getRefUser() {
+        return refUser;
     }
 
     public FirebaseUser getmUser(){
@@ -86,5 +93,29 @@ public class UserData {
             historic.add(travel);
         }
         refUser.child("historic").setValue(historic);
+    }
+
+    public void addFriendListener(FriendListener listener){
+        friendListeners.add(listener);
+    }
+
+    public void removeFriendListener(FriendListener listener){
+        friendListeners.remove(listener);
+    }
+
+    public void addFriend(String friend){
+        user.getFriends().add(friend);
+        refUser.child("friends").setValue(user.getFriends());
+        for(FriendListener listener: friendListeners){
+            listener.UpdateFriends(user.getFriends());
+        }
+    }
+
+    public void removeFriend(String userID){
+        user.getFriends().remove(userID);
+        refUser.child("friends").setValue(user.getFriends());
+        for(FriendListener listener: friendListeners){
+            listener.UpdateFriends(user.getFriends());
+        }
     }
 }

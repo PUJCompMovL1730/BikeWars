@@ -3,6 +3,7 @@ package co.edu.javeriana.bikewars;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,12 +34,21 @@ public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallb
     private GoogleMap map;
     private FirebaseAuth mAuth;
     private Marker ubication;
+    private FloatingActionButton endBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getBaseContext();
         setContentView(R.layout.activity_route_lobby_view);
+        endBtn = (FloatingActionButton) findViewById(R.id.lobbyEndBtn);
+        endBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MapData.getInstance().endRoute();
+                endBtn.setVisibility(View.INVISIBLE);
+            }
+        });
         UserData.getInstance().initialize();
         mAuth = FirebaseAuth.getInstance();
         mapFragment = (MapFragment) getFragmentManager()
@@ -59,7 +69,7 @@ public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallb
     }
 
     public void friendsLaunch(View view){
-        startActivity(new Intent(this, FriendsView.class));
+        startActivity(new Intent(this, FriendsLobby.class));
     }
 
     public void racesLaunch(View view){
@@ -112,6 +122,7 @@ public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallb
             ubication = map.addMarker(location);
         }
         if(route!=null){
+            endBtn.setVisibility(View.VISIBLE);
             map.addPolyline(route.getRoute());
             map.addMarker(route.getStart());
             map.addMarker(route.getEnd());

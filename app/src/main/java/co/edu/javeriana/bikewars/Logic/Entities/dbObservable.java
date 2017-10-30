@@ -20,11 +20,20 @@ import co.edu.javeriana.bikewars.Logic.UserData;
 public class dbObservable {
     private String userID;
     private String displayName;
+    private String photo;
     private double latitude;
     private double longitude;
     private DatabaseReference ref;
     private ValueEventListener listener;
     public MarkerOptions oldMarker;
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
 
     public String getUserID() {
         return userID;
@@ -58,11 +67,12 @@ public class dbObservable {
         this.longitude = longitude;
     }
 
-    public dbObservable(String userID, String displayName, double latitude, double longitude) {
+    public dbObservable(String userID, String displayName, double latitude, double longitude, String photo) {
         this.userID = userID;
         this.displayName = displayName;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.photo = photo;
     }
 
     public dbObservable() {
@@ -77,6 +87,7 @@ public class dbObservable {
                 displayName = retornado.getDisplayName();
                 latitude = retornado.getLatitude();
                 longitude = retornado.getLongitude();
+                photo = retornado.getPhoto();
                 listener.updateObservable(retornado);
             }
 
@@ -93,6 +104,7 @@ public class dbObservable {
         this.displayName = user.getDisplayName();
         this.latitude = location.getLatitude();
         this.longitude = location.getLongitude();
+        this.photo = user.getPhotoUrl().toString();
         ref.setValue(this);
         this.listener = ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -101,6 +113,7 @@ public class dbObservable {
                 displayName = retornado.getDisplayName();
                 latitude = retornado.getLatitude();
                 longitude = retornado.getLongitude();
+                photo = retornado.getPhoto();
                 listener.updateObservable(retornado);
             }
 
