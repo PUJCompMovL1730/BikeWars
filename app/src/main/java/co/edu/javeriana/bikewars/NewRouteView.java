@@ -126,6 +126,5 @@ public class NewRouteView extends AppCompatActivity implements OnMapReadyCallbac
         }
         poliRuta = map.addPolyline(polyOpt);
         Toast.makeText(getBaseContext(), "La distancia es de: " + distance, Toast.LENGTH_SHORT).show();
-        MapData.getInstance().setRoute(ruta);
     }
 }

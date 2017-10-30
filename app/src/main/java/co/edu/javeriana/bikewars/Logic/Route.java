@@ -26,6 +26,7 @@ import co.edu.javeriana.bikewars.Logic.Entities.dbRouteMarker;
  */
 
 public class Route {
+    private dbRoute dbRef;
     private String title;
     private MarkerOptions start;
     private MarkerOptions end;
@@ -34,7 +35,24 @@ public class Route {
 
     public Route(){}
 
+    public dbRoute getDbRef() {
+        return dbRef;
+    }
+
+    public void setDbRef(dbRoute dbRef) {
+        this.dbRef = dbRef;
+    }
+
+    public List<dbObservable> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<dbObservable> members) {
+        this.members = members;
+    }
+
     public Route(dbRoute route){
+        dbRef = route;
         this.start = new MarkerOptions().position(new LatLng(route.getStart().getLatitude(), route.getStart().getLongirude())).title(route.getStart().getTitle());
         this.end = new MarkerOptions().position(new LatLng(route.getEnd().getLatitude(), route.getEnd().getLongirude())).title(route.getEnd().getTitle());
         this.title = route.getDisplayName();
@@ -158,9 +176,10 @@ public class Route {
         for(dbObservable member: members){
             membersCodes.add(member.getUserID());
         }
-        FirebaseUser user = UserData.getInstance().getUser();
-        dbRoute retorno = new dbRoute(ref.getKey(), title, user.getUid(), user.getDisplayName(),new dbRouteMarker(start), new dbRouteMarker(end), membersCodes);
-        ref.setValue(retorno);
-        return retorno;
+        FirebaseUser user = UserData.getInstance().getmUser();
+        dbRef = new dbRoute(ref.getKey(), title, user.getUid(), user.getDisplayName(),new dbRouteMarker(start), new dbRouteMarker(end), membersCodes);
+        ref.setValue(dbRef);
+        return dbRef;
     }
+
 }

@@ -2,10 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="co.edu.javeriana.bikewars">
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -29,8 +28,8 @@
         <activity android:name=".MainView" />
         <activity android:name=".ConfigView" />
         <activity android:name=".ProfileView" />
-        <activity android:name=".RouteLobbyView" />
-        <activity android:name=".NewRouteView" />
+        <activity android:name=".RouteLobbyView" android:screenOrientation="portrait"/>
+        <activity android:name=".NewRouteView" android:screenOrientation="portrait"/>
         <activity android:name=".SelectionView" />
         <activity android:name=".HistoricView" />
         <activity android:name=".SearchView" />

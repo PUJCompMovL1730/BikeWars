@@ -11,18 +11,22 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Placeholder"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/routeFrom"
         android:layout_width="wrap_content"
-        android:layout_height="25"
+        android:layout_height="25dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:gravity="center_vertical"
         android:text="TextView"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/routeAuthor" />
@@ -30,13 +34,14 @@
     <TextView
         android:id="@+id/routeTo"
         android:layout_width="wrap_content"
-        android:layout_height="25"
+        android:layout_height="25dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:gravity="center_vertical"
         android:text="TextView"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView" />
+        app:layout_constraintStart_toEndOf="@+id/routeFromTo" />
 
     <TextView
         android:id="@+id/routeAuthor"
@@ -45,6 +50,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:text="TextView"
+        android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -55,16 +61,18 @@
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:text="creado por:"
+        android:textColor="@android:color/black"
         app:layout_constraintEnd_toStartOf="@+id/routeAuthor"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/routeFromTo"
         android:layout_width="wrap_content"
-        android:layout_height="25"
+        android:layout_height="25dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/routeFrom"
         app:srcCompat="@drawable/ic_arrow" />
+
 </android.support.constraint.ConstraintLayout>

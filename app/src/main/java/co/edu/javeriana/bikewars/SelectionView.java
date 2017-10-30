@@ -1,22 +1,23 @@
 package co.edu.javeriana.bikewars;
 
-import android.app.Activity;
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
-import android.Manifest;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -84,14 +85,14 @@ public class SelectionView extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(selecView==null){
-                    selecView = resultados.getChildAt(position);
-                    selecView.setBackgroundColor(Color.GRAY);
-                    seleccionada = resultadosLatLon.get((String)resultados.getItemAtPosition(position));
+                    selecView = view;
+                    selecView.setBackgroundColor(getResources().getColor(R.color.colorSelection));
+                    seleccionada = resultadosLatLon.get(resultados.getItemAtPosition(position));
                 }else{
                     selecView.setBackgroundColor(Color.WHITE);
-                    selecView = resultados.getChildAt(position);
-                    selecView.setBackgroundColor(Color.GRAY);
-                    seleccionada = resultadosLatLon.get((String)resultados.getItemAtPosition(position));
+                    selecView = view;
+                    selecView.setBackgroundColor(getResources().getColor(R.color.colorSelection));
+                    seleccionada = resultadosLatLon.get(resultados.getItemAtPosition(position));
                 }
             }
         });

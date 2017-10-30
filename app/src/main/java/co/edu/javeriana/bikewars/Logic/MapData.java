@@ -125,6 +125,7 @@ public class MapData implements ObservableListener{
     public void setRoute(Route route){
         this.route = route;
         updateListeners();
+        UserData.getInstance().addHistoric(route.getDbRef());
     }
 
     @Override
