@@ -33,8 +33,22 @@ public class LoginView extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser()!=null){
-                    startActivity(new Intent(getBaseContext(), RouteLobbyView.class));
-                    finish();
+                    TedPermission.with(getBaseContext())
+                            .setPermissionListener(new PermissionListener() {
+                                @Override
+                                public void onPermissionGranted() {
+                                    startActivity(new Intent(getBaseContext(), RouteLobbyView.class));
+                                    finish();
+                                }
+
+                                @Override
+                                public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+
+                                }
+                            })
+                            .setDeniedMessage("La aplicacion necesita permisos de ubicacion")
+                            .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+                            .check();
                 }
             }
         });
