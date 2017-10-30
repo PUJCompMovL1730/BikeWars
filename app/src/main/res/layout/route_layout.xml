@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/routeFrom"
+        android:id="@+id/travelFrom"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_marginBottom="8dp"
@@ -29,7 +29,7 @@
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/routeAuthor" />
+        app:layout_constraintTop_toBottomOf="@+id/travelAuthor" />
 
     <TextView
         android:id="@+id/routeTo"
@@ -41,10 +41,10 @@
         android:text="TextView"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/routeFromTo" />
+        app:layout_constraintStart_toEndOf="@+id/travelFromTo" />
 
     <TextView
-        android:id="@+id/routeAuthor"
+        android:id="@+id/travelAuthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -62,17 +62,17 @@
         android:layout_marginTop="8dp"
         android:text="creado por:"
         android:textColor="@android:color/black"
-        app:layout_constraintEnd_toStartOf="@+id/routeAuthor"
+        app:layout_constraintEnd_toStartOf="@+id/travelAuthor"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/routeFromTo"
+        android:id="@+id/travelFromTo"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/routeFrom"
+        app:layout_constraintStart_toEndOf="@+id/travelFrom"
         app:srcCompat="@drawable/ic_arrow" />
 
 </android.support.constraint.ConstraintLayout>

@@ -127,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:onClick="searchRouteLaunch"
                     android:src="@drawable/ic_search_black_24dp"
-                    app:fab_label="Buscar route"
+                    app:fab_label="Buscar ruta"
                     app:fab_size="mini" />
 
                 <com.github.clans.fab.FloatingActionButton
@@ -136,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:onClick="newRouteLaunch"
                     android:src="@drawable/ic_add_circle"
-                    app:fab_label="Nueva route"
+                    app:fab_label="Nueva ruta"
                     app:fab_size="mini" />
 
                 <com.github.clans.fab.FloatingActionButton
@@ -160,6 +160,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@android:drawable/btn_star_big_on" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/floatingActionButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#DA4336"
+                android:clickable="true"
+                android:visibility="invisible"
+                app:fab_size="normal"
+                app:srcCompat="@drawable/cancel"
+                tools:layout_editor_absoluteX="164dp"
+                tools:layout_editor_absoluteY="454dp" />
 
         </android.support.constraint.ConstraintLayout>
 

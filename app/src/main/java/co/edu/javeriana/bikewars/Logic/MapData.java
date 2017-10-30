@@ -1,6 +1,7 @@
 package co.edu.javeriana.bikewars.Logic;
 
 import android.location.Location;
+import android.widget.Toast;
 
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.GoogleMap;
@@ -16,6 +17,7 @@ import java.util.List;
 import co.edu.javeriana.bikewars.Interfaces.LocationListener;
 import co.edu.javeriana.bikewars.Interfaces.ObservableListener;
 import co.edu.javeriana.bikewars.Logic.Entities.dbObservable;
+import co.edu.javeriana.bikewars.Logic.Entities.dbTravel;
 import co.edu.javeriana.bikewars.RouteLobbyView;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -41,6 +43,7 @@ public class MapData implements ObservableListener{
     private List<MarkerOptions> markers;
     private List<LocationListener> listeners;
     private Route route;
+    private dbTravel travel;
 
     private MapData() {
         markers = new ArrayList<>();
@@ -87,6 +90,9 @@ public class MapData implements ObservableListener{
                                 ubication = new dbObservable(mUser, MapData.getInstance(), location);
                             }else{
                                 ubication.updateObservable(location);
+                                if(travel!=null){
+                                    travel.addMeters(location);
+                                }
                             }
                         //}
                         updateListeners();
@@ -124,8 +130,18 @@ public class MapData implements ObservableListener{
 
     public void setRoute(Route route){
         this.route = route;
+        this.travel = new dbTravel(route.getDbRef(), System.currentTimeMillis(), "Lluvia");
         updateListeners();
-        UserData.getInstance().addHistoric(route.getDbRef());
+    }
+
+    public void endRoute(){
+        long endTime = System.currentTimeMillis();
+        this.travel.setTimeElapsed(endTime-this.travel.getDate());
+        UserData.getInstance().addHistoric(travel);
+        travel=null;
+        markers.clear();
+        route=null;
+        Toast.makeText(RouteLobbyView.context, "Recorrido Terminado", Toast.LENGTH_SHORT).show();
     }
 
     @Override

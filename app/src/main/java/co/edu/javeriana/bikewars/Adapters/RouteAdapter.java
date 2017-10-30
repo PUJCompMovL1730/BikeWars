@@ -33,11 +33,11 @@ public class RouteAdapter extends ArrayAdapter<dbRoute>{
                     R.layout.route_layout, parent, false);
         }
         TextView name, from, to, author;
-        ImageView arrow = (ImageView) convertView.findViewById(R.id.routeFromTo);
+        ImageView arrow = (ImageView) convertView.findViewById(R.id.travelFromTo);
         name = (TextView) convertView.findViewById(R.id.routeName);
-        from = (TextView) convertView.findViewById(R.id.routeFrom);
+        from = (TextView) convertView.findViewById(R.id.travelFrom);
         to = (TextView) convertView.findViewById(R.id.routeTo);
-        author = (TextView) convertView.findViewById(R.id.routeAuthor);
+        author = (TextView) convertView.findViewById(R.id.travelAuthor);
         dbRoute model = getItem(position);
         name.setText(model.getDisplayName());
         from.setText(model.getStart().getTitle());

@@ -11,7 +11,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import co.edu.javeriana.bikewars.Logic.Entities.dbRoute;
+import co.edu.javeriana.bikewars.Logic.Entities.dbTravel;
 import co.edu.javeriana.bikewars.Logic.Entities.dbUser;
 
 /**
@@ -51,7 +51,6 @@ public class UserData {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     user = dataSnapshot.getValue(dbUser.class);
-                    //Log.i("UserData", "Usuario: " + user.getDisplayName());
                 }
 
                 @Override
@@ -74,17 +73,17 @@ public class UserData {
         refUser.setValue(newUser);
     }
 
-    public void addHistoric(dbRoute route){
-        List<dbRoute> historic = user.getHistoric();
+    public void addHistoric(dbTravel travel){
+        List<dbTravel> historic = user.getHistoric();
         if(historic!=null && historic.size()>5){
             historic.remove(0);
-            historic.add(route);
+            historic.add(travel);
         }else{
             if(historic==null){
                 historic = new ArrayList<>();
                 user.setHistoric(historic);
             }
-            historic.add(route);
+            historic.add(travel);
         }
         refUser.child("historic").setValue(historic);
     }

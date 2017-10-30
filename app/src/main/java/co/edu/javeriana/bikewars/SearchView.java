@@ -48,9 +48,9 @@ public class SearchView extends AppCompatActivity {
             protected void populateView(View v, dbRoute model, int position) {
                 TextView name, from, to, author;
                 name = (TextView) v.findViewById(R.id.routeName);
-                from = (TextView) v.findViewById(R.id.routeFrom);
+                from = (TextView) v.findViewById(R.id.travelFrom);
                 to = (TextView) v.findViewById(R.id.routeTo);
-                author = (TextView) v.findViewById(R.id.routeAuthor);
+                author = (TextView) v.findViewById(R.id.travelAuthor);
                 name.setText(model.getDisplayName());
                 from.setText(model.getStart().getTitle());
                 to.setText(model.getEnd().getTitle());

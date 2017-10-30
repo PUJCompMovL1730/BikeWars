@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,16 +16,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
 import co.edu.javeriana.bikewars.Interfaces.LocationListener;
-import co.edu.javeriana.bikewars.Logic.Entities.dbRoute;
 import co.edu.javeriana.bikewars.Logic.MapData;
 import co.edu.javeriana.bikewars.Logic.Route;
 import co.edu.javeriana.bikewars.Logic.UserData;
@@ -129,19 +122,6 @@ public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallb
     }
 
     public void test(View v){
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(UserData.routesRoot);
-        ref.orderByChild("OwnerID").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot data: dataSnapshot.getChildren()){
-                    Log.i("test", data.getValue(dbRoute.class).getDisplayName());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        MapData.getInstance().endRoute();
     }
 }

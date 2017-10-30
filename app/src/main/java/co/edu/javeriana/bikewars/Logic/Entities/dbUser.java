@@ -16,7 +16,7 @@ public class dbUser {
     private List<String> friends;
     private List<String> routes;
     private List<String> groups;
-    private List<dbRoute> historic;
+    private List<dbTravel> historic;
     private List<String> commercialMarkers;
 
     public dbUser() {
@@ -81,11 +81,11 @@ public class dbUser {
         this.groups = groups;
     }
 
-    public List<dbRoute> getHistoric() {
+    public List<dbTravel> getHistoric() {
         return historic;
     }
 
-    public void setHistoric(List<dbRoute> historic) {
+    public void setHistoric(List<dbTravel> historic) {
         this.historic = historic;
     }
 
