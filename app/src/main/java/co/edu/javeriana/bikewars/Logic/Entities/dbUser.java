@@ -88,6 +88,9 @@ public class dbUser {
     }
 
     public List<dbTravel> getHistoric() {
+        if(historic==null){
+               historic = new ArrayList<>();
+        }
         return historic;
     }
 
