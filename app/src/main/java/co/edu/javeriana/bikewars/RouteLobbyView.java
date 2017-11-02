@@ -17,7 +17,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import co.edu.javeriana.bikewars.Interfaces.LocationListener;
@@ -41,7 +44,7 @@ public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallb
         super.onCreate(savedInstanceState);
         context = getBaseContext();
         setContentView(R.layout.activity_route_lobby_view);
-        endBtn = (FloatingActionButton) findViewById(R.id.lobbyEndBtn);
+        endBtn = findViewById(R.id.lobbyEndBtn);
         endBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,12 +52,29 @@ public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallb
                 endBtn.setVisibility(View.INVISIBLE);
             }
         });
-        UserData.getInstance().initialize();
-        MapData.getInstance();
-        mAuth = FirebaseAuth.getInstance();
+        final RouteLobbyView instance = this;
         mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.mainMap);
-        mapFragment.getMapAsync(this);
+        mAuth = FirebaseAuth.getInstance();
+        TedPermission.with(getBaseContext())
+                .setPermissionListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted() {
+                        UserData.getInstance().initialize();
+                        MapData.getInstance();
+                        mapFragment.getMapAsync(instance);
+                    }
+
+                    @Override
+                    public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                        mAuth.signOut();
+                        startActivity(new Intent(getBaseContext(), LoginView.class));
+                        finish();
+                    }
+                })
+                .setDeniedMessage("La aplicacion necesita permisos de ubicacion")
+                .setPermissions(android.Manifest.permission.ACCESS_FINE_LOCATION)
+                .check();
     }
 
     public void newRouteLaunch(View view){

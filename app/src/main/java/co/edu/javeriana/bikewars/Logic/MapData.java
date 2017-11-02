@@ -1,6 +1,10 @@
 package co.edu.javeriana.bikewars.Logic;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.location.LocationRequest;
@@ -32,7 +36,7 @@ import pl.charmas.android.reactivelocation2.ReactiveLocationProvider;
  * Created by jairo on 28/10/17.
  */
 
-public class MapData implements ObservableListener{
+public class MapData implements ObservableListener {
     //Aux
     private static MapData instance = null;
     public static final LatLng bogotaMark = new LatLng(4.624335, -74.063644);
@@ -60,19 +64,19 @@ public class MapData implements ObservableListener{
         loadGlobalMarkers();
     }
 
-    public static MapData getInstance(){
-        if(instance==null){
+    public static MapData getInstance() {
+        if (instance == null) {
             instance = new MapData();
         }
         return instance;
     }
 
-    private void loadGlobalMarkers(){
+    private void loadGlobalMarkers() {
         globalMarkers = new ArrayList<>();
         FirebaseDatabase.getInstance().getReference(UserData.markersRoot).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot marker: dataSnapshot.getChildren()){
+                for (DataSnapshot marker : dataSnapshot.getChildren()) {
                     dbCommercialMarker markerData = marker.getValue(dbCommercialMarker.class);
                     globalMarkers.add(new MarkerOptions()
                             .title(markerData.getTitle())
@@ -89,40 +93,45 @@ public class MapData implements ObservableListener{
         });
     }
 
-    public dbObservable getUbication(){
-        synchronized (ubication){
+    public dbObservable getUbication() {
+        synchronized (ubication) {
             return ubication;
         }
     }
 
-    public Marker addMarker(GoogleMap map, MarkerOptions options){
+    public Marker addMarker(GoogleMap map, MarkerOptions options) {
         markers.add(options);
         return map.addMarker(options);
     }
 
-    public List<MarkerOptions> getMarkers(){
+    public List<MarkerOptions> getMarkers() {
         return markers;
     }
 
-    public void addListener(LocationListener listener){
-        synchronized (listeners){
-            if(listeners.isEmpty()){
+    public void addListener(LocationListener listener) {
+        synchronized (listeners) {
+            if (listeners.isEmpty()) {
                 LocationRequest mLocationRequest = new LocationRequest();
                 mLocationRequest.setInterval(0);
                 mLocationRequest.setFastestInterval(0);
                 mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                if (ActivityCompat.checkSelfPermission(RouteLobbyView.context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    return;
+                }
                 subscription = provider.getUpdatedLocation(mLocationRequest).subscribe(new Consumer<Location>() {
                     @Override
                     public void accept(Location location) throws Exception {
                         //synchronized (ubication){
-                            if(ubication==null){
-                                ubication = new dbObservable(mUser, MapData.getInstance(), location);
-                            }else{
-                                ubication.updateObservable(location);
-                                if(travel!=null){
-                                    travel.addMeters(location);
-                                }
+                        Log.i("LocationProvider", "Esta ejecutando este codigo");
+                        if (ubication == null) {
+                            ubication = new dbObservable(mUser, MapData.getInstance(), location);
+                        } else {
+                            ubication.updateObservable(location);
+                            if (travel != null) {
+                                travel.addMeters(location);
                             }
+                        }
                         //}
                         updateListeners();
                     }

@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion "27.0.0"
     defaultConfig {
         applicationId "co.edu.javeriana.bikewars"
-        minSdkVersion 23
-        targetSdkVersion 26
+        minSdkVersion 21
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -30,12 +30,12 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:appcompat-v7:27.0.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:design:27.0.0'
     compile 'com.google.android.gms:play-services-maps:11.2.0'
-    compile 'com.android.support:support-v4:26.1.0'
-    compile 'com.android.support:support-vector-drawable:26.1.0'
+    compile 'com.android.support:support-v4:27.0.0'
+    compile 'com.android.support:support-vector-drawable:27.0.0'
 
     //Librerias Auxiliares:
     compile 'io.nlopez.smartlocation:library:3.3.2'
