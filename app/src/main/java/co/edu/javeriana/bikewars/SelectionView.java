@@ -42,8 +42,8 @@ public class SelectionView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selection_view);
-        busqueda = (EditText) findViewById(R.id.selectionSearchTxt);
-        resultados = (ListView) findViewById(R.id.selectionResultList);
+        busqueda = findViewById(R.id.selectionSearchTxt);
+        resultados = findViewById(R.id.selectionResultList);
         permisos = new PermissionListener() {
             @Override
             public void onPermissionGranted() {

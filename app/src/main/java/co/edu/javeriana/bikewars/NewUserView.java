@@ -39,72 +39,93 @@ import co.edu.javeriana.bikewars.Logic.UserData;
 public class NewUserView extends AppCompatActivity {
 
     private Bitmap photoBitMap = null;
-    private ImageView img;
-    private EditText name, email, pass;
+    private ImageView img = findViewById(R.id.newUserPhoto);
+    private EditText name = findViewById(R.id.newUserName),
+            email = findViewById(R.id.newUserEmail),
+            pass = findViewById(R.id.newUserPass);
     private Pattern emailRegex;
     private FirebaseAuth mAuth;
     private FirebaseStorage bucket;
+    private final int MAX_ATTEMPTS = 4;
+    private int attempts = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_user_view);
-        img = (ImageView) findViewById(R.id.newUserPhoto);
-        name = (EditText) findViewById(R.id.newUserName);
-        email = (EditText) findViewById(R.id.newUserEmail);
-        pass = (EditText) findViewById(R.id.newUserPass);
         emailRegex = Pattern.compile("\\w+@\\w+(.[a-z])+");
         mAuth = FirebaseAuth.getInstance();
         bucket = FirebaseStorage.getInstance();
     }
 
     public void createUserBtn(View view){
-        Boolean validMail = emailRegex.matcher(email.getText().toString()).matches();
+        if(photoBitMap==null){
+            Toast.makeText(this, "Debe seleccionar una foto de la galeria o tomar una nueva", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String emailTxt = email.getText().toString();
+        String passTxt = pass.getText().toString();
+        Boolean validMail = emailRegex.matcher(emailTxt).matches();
         if(validMail){
-            mAuth.createUserWithEmailAndPassword(email.getText().toString(), pass.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            mAuth.createUserWithEmailAndPassword(emailTxt, passTxt).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
-                        final FirebaseUser user = mAuth.getCurrentUser();
-                        if(user!=null){
-                            StorageReference photoRef = bucket.getReference("images/"+user.getUid()+".jpg");
-                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            photoBitMap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                            byte[] data = baos.toByteArray();
-                            UploadTask upload = photoRef.putBytes(data);
-                            upload.addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getBaseContext(), "Ocurrio un error al cargar la imagen", Toast.LENGTH_SHORT).show();
-                                }
-                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                    UserProfileChangeRequest updater = new UserProfileChangeRequest.Builder()
-                                            .setDisplayName(name.getText().toString())
-                                            .setPhotoUri(taskSnapshot.getDownloadUrl())
-                                            .build();
-                                    user.updateProfile(updater).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            FirebaseDatabase.getInstance().getReference(UserData.usersRoot+user.getUid()).setValue(new dbUser(user.getUid(), user.getDisplayName(), user.getPhotoUrl())).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    finish();
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                        }
+                        updateInfo();
                     }else{
-                        Toast.makeText(getBaseContext(), "Registro fallido.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(), "Registro fallido por:" + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         }else{
-            Toast.makeText(this, "Elementos invalidos.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Elementos invalidos", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void updateInfo(){
+        final FirebaseUser user = mAuth.getCurrentUser();
+        if(user!=null){
+            StorageReference photoRef = bucket.getReference("images/"+user.getUid()+".jpg");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            photoBitMap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+            UploadTask upload = photoRef.putBytes(data);
+            upload.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getBaseContext(), "Ocurrio un error al cargar la imagen", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    UserProfileChangeRequest updater = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(name.getText().toString())
+                            .setPhotoUri(taskSnapshot.getDownloadUrl())
+                            .build();
+                    user.updateProfile(updater).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            FirebaseDatabase.getInstance().getReference(UserData.usersRoot+user.getUid()).setValue(new dbUser(user.getUid(), user.getDisplayName(), user.getPhotoUrl())).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    finish();
+                                }
+                            });
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(NewUserView.this, "Ocurrio un error al actualizar el usuario", Toast.LENGTH_SHORT).show();
+                            if(attempts<MAX_ATTEMPTS){
+                                attempts++;
+                                updateInfo();
+                            }else{
+                                Toast.makeText(NewUserView.this, "Maximo numero de intentos para actualizar usuario", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            });
         }
     }
 

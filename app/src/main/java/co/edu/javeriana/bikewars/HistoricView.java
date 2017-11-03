@@ -30,7 +30,7 @@ public class HistoricView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historic_view);
-        list = (ListView) findViewById(R.id.historicList);
+        list = findViewById(R.id.historicList);
         List<dbTravel> listData = UserData.getInstance().getUser().getHistoric();
         if(listData==null){
             listData = new ArrayList<>();

@@ -28,7 +28,7 @@ public class SearchFriendsView extends AppCompatActivity implements FriendListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_friends_view);
-        list = (ListView) findViewById(R.id.searchFriendsList);
+        list = findViewById(R.id.searchFriendsList);
         UserData.getInstance().addFriendListener(this);
         populateList(UserData.getInstance().getUser().getFriends());
 

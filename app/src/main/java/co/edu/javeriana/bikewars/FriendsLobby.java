@@ -29,8 +29,8 @@ public class FriendsLobby extends AppCompatActivity implements FriendListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_lobby);
-        list = (ListView) findViewById(R.id.friendsViewList);
-        groups = (ListView) findViewById(R.id.friendsViewGroups);
+        list = findViewById(R.id.friendsViewList);
+        groups = findViewById(R.id.friendsViewGroups);
         UserData.getInstance().addFriendListener(this);
         populateList(UserData.getInstance().getUser().getFriends());
     }

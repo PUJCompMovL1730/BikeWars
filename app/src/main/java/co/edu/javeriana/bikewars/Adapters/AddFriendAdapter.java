@@ -39,10 +39,10 @@ public class AddFriendAdapter extends ArrayAdapter<dbObservable>{
             convertView = inflater.inflate(
                     R.layout.add_friend_layout, parent, false);
         }
-        final ImageView photo = (ImageView) convertView.findViewById(R.id.newGroupFriendPhoto);
+        final ImageView photo = convertView.findViewById(R.id.newGroupFriendPhoto);
         final Bitmap[] photoBit = new Bitmap[1];
-        TextView name = (TextView) convertView.findViewById(R.id.addFriendName);
-        ImageButton addFriend = (ImageButton) convertView.findViewById(R.id.addFriendAdd);
+        TextView name = convertView.findViewById(R.id.addFriendName);
+        ImageButton addFriend = convertView.findViewById(R.id.addFriendAdd);
         final dbObservable model = getItem(position);
         FirebaseStorage.getInstance().getReferenceFromUrl(model.getPhoto()).getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override

@@ -32,9 +32,9 @@ public class NewGroupView extends AppCompatActivity implements NewGroupListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_group_view);
         final NewGroupListener listener = this;
-        friends = (ListView) findViewById(R.id.newGroupFriends);
-        selected = (ListView) findViewById(R.id.newGroupSelected);
-        name = (EditText) findViewById(R.id.newGroupName);
+        friends = findViewById(R.id.newGroupFriends);
+        selected = findViewById(R.id.newGroupSelected);
+        name = findViewById(R.id.newGroupName);
         friendsList = new ArrayList<>();
         selectedList = new ArrayList<>();
         FirebaseDatabase.getInstance().getReference(UserData.observablesRoot).addListenerForSingleValueEvent(new ValueEventListener() {

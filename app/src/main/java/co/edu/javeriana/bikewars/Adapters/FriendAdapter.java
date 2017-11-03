@@ -41,11 +41,11 @@ public class FriendAdapter extends ArrayAdapter<dbObservable>{
             convertView = inflater.inflate(
                     R.layout.friend_layout, parent, false);
         }
-        final ImageView photo = (ImageView) convertView.findViewById(R.id.friendPhoto);
+        final ImageView photo = convertView.findViewById(R.id.friendPhoto);
         final Bitmap[] photoBit = new Bitmap[1];
-        TextView name = (TextView) convertView.findViewById(R.id.friendName);
-        ImageButton sendMessage = (ImageButton) convertView.findViewById(R.id.friendSendMessage);
-        ImageButton removeFriend = (ImageButton) convertView.findViewById(R.id.friendRemove);
+        TextView name = convertView.findViewById(R.id.friendName);
+        ImageButton sendMessage = convertView.findViewById(R.id.friendSendMessage);
+        ImageButton removeFriend = convertView.findViewById(R.id.friendRemove);
         final dbObservable model = getItem(position);
         FirebaseStorage.getInstance().getReferenceFromUrl(model.getPhoto()).getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override

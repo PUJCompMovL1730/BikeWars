@@ -38,8 +38,8 @@ public class SearchView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_view);
-        resultados = (ListView) findViewById(R.id.searchResultList);
-        searchTxt = (EditText) findViewById(R.id.searchSearchTxt);
+        resultados = findViewById(R.id.searchResultList);
+        searchTxt = findViewById(R.id.searchSearchTxt);
         db = FirebaseDatabase.getInstance();
         ref = db.getReference(UserData.routesRoot);
         FirebaseListAdapter<dbRoute> adapter = new FirebaseListAdapter<dbRoute>(this, dbRoute.class, R.layout.route_layout,ref.orderByKey()) {
@@ -47,10 +47,10 @@ public class SearchView extends AppCompatActivity {
             @Override
             protected void populateView(View v, dbRoute model, int position) {
                 TextView name, from, to, author;
-                name = (TextView) v.findViewById(R.id.routeName);
-                from = (TextView) v.findViewById(R.id.travelFrom);
-                to = (TextView) v.findViewById(R.id.routeTo);
-                author = (TextView) v.findViewById(R.id.travelAuthor);
+                name = v.findViewById(R.id.routeName);
+                from = v.findViewById(R.id.travelFrom);
+                to = v.findViewById(R.id.routeTo);
+                author = v.findViewById(R.id.travelAuthor);
                 name.setText(model.getDisplayName());
                 from.setText(model.getStart().getTitle());
                 to.setText(model.getEnd().getTitle());

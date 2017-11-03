@@ -39,15 +39,15 @@ public class TravelAdapter extends ArrayAdapter<dbTravel>{
                     R.layout.travel_layout, parent, false);
         }
         TextView name, from, to, author, date, time, kilometers, weather;
-        ImageView arrow = (ImageView) convertView.findViewById(R.id.travelFromTo);
-        name = (TextView) convertView.findViewById(R.id.travelName);
-        from = (TextView) convertView.findViewById(R.id.travelFrom);
-        to = (TextView) convertView.findViewById(R.id.travelTo);
-        author = (TextView) convertView.findViewById(R.id.travelAuthor);
-        date = (TextView) convertView.findViewById(R.id.travelDate);
-        time = (TextView) convertView.findViewById(R.id.travelTime);
-        kilometers = (TextView) convertView.findViewById(R.id.travelKilometers);
-        weather = (TextView) convertView.findViewById(R.id.travelWeather);
+        ImageView arrow = convertView.findViewById(R.id.travelFromTo);
+        name = convertView.findViewById(R.id.travelName);
+        from = convertView.findViewById(R.id.travelFrom);
+        to = convertView.findViewById(R.id.travelTo);
+        author = convertView.findViewById(R.id.travelAuthor);
+        date = convertView.findViewById(R.id.travelDate);
+        time = convertView.findViewById(R.id.travelTime);
+        kilometers = convertView.findViewById(R.id.travelKilometers);
+        weather = convertView.findViewById(R.id.travelWeather);
         dbTravel model = getItem(position);
         name.setText(model.getRoute().getDisplayName());
         from.setText(model.getRoute().getStart().getTitle());

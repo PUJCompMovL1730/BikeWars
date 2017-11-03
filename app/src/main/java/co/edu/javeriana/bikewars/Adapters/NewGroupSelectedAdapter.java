@@ -43,10 +43,10 @@ public class NewGroupSelectedAdapter extends ArrayAdapter<dbObservable>{
             convertView = inflater.inflate(
                     R.layout.new_group_selected, parent, false);
         }
-        final ImageView photo = (ImageView) convertView.findViewById(R.id.newGroupSelectedPhoto);
+        final ImageView photo = convertView.findViewById(R.id.newGroupSelectedPhoto);
         final Bitmap[] photoBit = new Bitmap[1];
-        TextView name = (TextView) convertView.findViewById(R.id.newGroupSelectedName);
-        ImageButton removeFriend = (ImageButton) convertView.findViewById(R.id.newGroupSelectedRemove);
+        TextView name = convertView.findViewById(R.id.newGroupSelectedName);
+        ImageButton removeFriend = convertView.findViewById(R.id.newGroupSelectedRemove);
         final dbObservable model = getItem(position);
         FirebaseStorage.getInstance().getReferenceFromUrl(model.getPhoto()).getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override

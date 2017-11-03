@@ -26,7 +26,7 @@ public class RaceView extends AppCompatActivity {
         carreras = new ArrayList<>();
         carreras.add(new RaceItem("Vuelta Colombia", new Date()));
         adapter = new RaceItemAdapter(this, carreras);
-        list = (ListView) findViewById(R.id.raceList);
+        list = findViewById(R.id.raceList);
         list.setAdapter(adapter);
     }
 

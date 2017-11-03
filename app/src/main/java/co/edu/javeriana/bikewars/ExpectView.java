@@ -33,13 +33,13 @@ public class ExpectView extends AppCompatActivity implements OnMapReadyCallback 
         mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.expectMap);
         mapFragment.getMapAsync(this);
-        banner = (TextView) findViewById(R.id.expectBanner);
+        banner = findViewById(R.id.expectBanner);
         banner.setText(getIntent().getStringExtra("name"));
         top = new ArrayList<>();
         top.add("Daniela");
         top.add("Sebastian");
         top.add("David");
-        list = (ListView) findViewById(R.id.expectTopList);
+        list = findViewById(R.id.expectTopList);
         list.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, top));
     }
 

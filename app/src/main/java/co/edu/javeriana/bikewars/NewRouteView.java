@@ -40,9 +40,9 @@ public class NewRouteView extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_route_view);
-        salidaBtn = (Button) findViewById(R.id.newRouteStartBtn);
-        llegadaBtn = (Button) findViewById(R.id.newRouteEndBtn);
-        routeName = (EditText) findViewById(R.id.newRouteName);
+        salidaBtn = findViewById(R.id.newRouteStartBtn);
+        llegadaBtn = findViewById(R.id.newRouteEndBtn);
+        routeName = findViewById(R.id.newRouteName);
         mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.newRouteMap);
         mapFragment.getMapAsync(this);

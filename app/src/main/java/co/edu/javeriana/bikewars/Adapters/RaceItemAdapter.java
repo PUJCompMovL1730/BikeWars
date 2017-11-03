@@ -34,10 +34,10 @@ public class RaceItemAdapter extends ArrayAdapter<RaceItem>{
             convertView = inflater.inflate(
                     R.layout.race_item_layout, parent, false);
         }
-        final TextView name = (TextView) convertView.findViewById(R.id.race_item_name);
-        TextView date = (TextView) convertView.findViewById(R.id.race_item_date);
-        ImageButton expect = (ImageButton) convertView.findViewById(R.id.race_item_expect);
-        ImageButton join = (ImageButton) convertView.findViewById(R.id.race_item_join);
+        final TextView name = convertView.findViewById(R.id.race_item_name);
+        TextView date = convertView.findViewById(R.id.race_item_date);
+        ImageButton expect = convertView.findViewById(R.id.race_item_expect);
+        ImageButton join = convertView.findViewById(R.id.race_item_join);
         RaceItem race = getItem(position);
         name.setText(race.getName());
         date.setText(new SimpleDateFormat("dd-MM-yyyy").format(race.getDate()));
