@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.location.LocationRequest;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.edu.javeriana.bikewars.Interfaces.LocationListener;
-import co.edu.javeriana.bikewars.Interfaces.ObservableListener;
 import co.edu.javeriana.bikewars.Logic.Entities.dbCommercialMarker;
 import co.edu.javeriana.bikewars.Logic.Entities.dbObservable;
 import co.edu.javeriana.bikewars.Logic.Entities.dbTravel;
@@ -36,7 +34,7 @@ import pl.charmas.android.reactivelocation2.ReactiveLocationProvider;
  * Created by jairo on 28/10/17.
  */
 
-public class MapData implements ObservableListener {
+public class MapData {
     //Aux
     private static MapData instance = null;
     public static final LatLng bogotaMark = new LatLng(4.624335, -74.063644);
@@ -122,18 +120,6 @@ public class MapData implements ObservableListener {
                 subscription = provider.getUpdatedLocation(mLocationRequest).subscribe(new Consumer<Location>() {
                     @Override
                     public void accept(Location location) throws Exception {
-                        //synchronized (ubication){
-                        Log.i("LocationProvider", "Esta ejecutando este codigo");
-                        if (ubication == null) {
-                            ubication = new dbObservable(mUser, MapData.getInstance(), location);
-                        } else {
-                            ubication.updateObservable(location);
-                            if (travel != null) {
-                                travel.addMeters(location);
-                            }
-                        }
-                        //}
-                        updateListeners();
                     }
                 });
                 listeners.add(listener);
@@ -181,12 +167,5 @@ public class MapData implements ObservableListener {
         route=null;
         updateListeners();
         Toast.makeText(RouteLobbyView.context, "Recorrido Terminado", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void updateObservable(dbObservable observable) {
-        markers.remove(observable.oldMarker);
-        MarkerOptions newMarker = new MarkerOptions().position(new LatLng(observable.getLatitude(), observable.getLongitude())).title(observable.getDisplayName());
-        updateListeners();
     }
 }

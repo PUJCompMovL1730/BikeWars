@@ -1,15 +1,4 @@
 <resources>
     <string name="app_name">BikeWars</string>
-
-    <!-- Strings related to login -->
-
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
-
-    <!-- Example settings for Data & Sync -->
-
-    <!-- Example settings for Notifications -->
-
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="observablesRoot">db/observables/</string>
 </resources>

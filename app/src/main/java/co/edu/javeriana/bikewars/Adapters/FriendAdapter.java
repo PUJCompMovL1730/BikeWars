@@ -19,6 +19,7 @@ import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.List;
 
+import co.edu.javeriana.bikewars.Auxiliar.Constants;
 import co.edu.javeriana.bikewars.ChatView;
 import co.edu.javeriana.bikewars.Logic.Entities.dbObservable;
 import co.edu.javeriana.bikewars.Logic.UserData;
@@ -47,7 +48,7 @@ public class FriendAdapter extends ArrayAdapter<dbObservable>{
         ImageButton sendMessage = convertView.findViewById(R.id.friendSendMessage);
         ImageButton removeFriend = convertView.findViewById(R.id.friendRemove);
         final dbObservable model = getItem(position);
-        FirebaseStorage.getInstance().getReferenceFromUrl(model.getPhoto()).getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+        FirebaseStorage.getInstance().getReferenceFromUrl(model.getPhoto()).getBytes(Constants.MAXBYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
                 photoBit[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
