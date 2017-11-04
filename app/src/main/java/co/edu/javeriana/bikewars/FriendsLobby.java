@@ -51,7 +51,7 @@ public class FriendsLobby extends AppCompatActivity{
                         friendsList.add(friend);
                     }
                 }
-                listViewFriends.setAdapter(new FriendAdapter(getBaseContext(), R.layout.friend_layout, friendsList));
+                listViewFriends.setAdapter(new FriendAdapter(FriendsLobby.this, R.layout.friend_layout, friendsList));
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {}
@@ -65,7 +65,7 @@ public class FriendsLobby extends AppCompatActivity{
                         groupsList.add(group.getName());
                     }
                 }
-                listViewGroups.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, groupsList));
+                listViewGroups.setAdapter(new ArrayAdapter<String>(FriendsLobby.this, android.R.layout.simple_list_item_1, groupsList));
             }
 
             @Override

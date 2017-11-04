@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -82,7 +83,8 @@ public class dbObservable {
         this.longitude = longitude;
     }
 
-    public Bitmap getPhotoBmp() {
+    @Exclude
+    public Bitmap getPhotoBpm() {
         return photoBmp;
     }
 
@@ -226,5 +228,6 @@ public class dbObservable {
         latitude = location.latitude;
         longitude = location.longitude;
         marker.setPosition(location);
+        ref.setValue(this);
     }
 }

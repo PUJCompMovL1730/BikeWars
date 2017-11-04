@@ -32,8 +32,12 @@ import co.edu.javeriana.bikewars.R;
  */
 
 public class FriendAdapter extends ArrayAdapter<dbObservable>{
+
+    private Context cache;
+
     public FriendAdapter(@NonNull Context context, int resource, @NonNull List<dbObservable> objects) {
         super(context, resource, objects);
+        cache = context;
     }
 
     @NonNull
@@ -56,11 +60,12 @@ public class FriendAdapter extends ArrayAdapter<dbObservable>{
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent chatIntent = new Intent(getContext(), ChatView.class);
-                chatIntent.putExtra("photo", model.getPhotoBmp());
+                Intent chatIntent = new Intent(cache, ChatView.class);
+                chatIntent.putExtra("photo", model.getPhoto());
                 chatIntent.putExtra("name", model.getDisplayName());
-                chatIntent.putExtra("UserID", model.getUserID());
-                getContext().startActivity(chatIntent);
+                chatIntent.putExtra("userID", model.getUserID());
+                chatIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                cache.startActivity(chatIntent);
             }
         });
         removeFriend.setImageResource(R.drawable.cancel);
