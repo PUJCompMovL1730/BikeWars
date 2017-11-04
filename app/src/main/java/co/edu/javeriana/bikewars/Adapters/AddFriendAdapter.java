@@ -11,14 +11,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import co.edu.javeriana.bikewars.Auxiliar.Constants;
@@ -58,9 +61,16 @@ public class AddFriendAdapter extends ArrayAdapter<dbObservable>{
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        List<String> friends = dataSnapshot.getValue(List.class);
+                        GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {};
+                        List<String> friends = dataSnapshot.getValue(t);
+                        if(friends==null){
+                            friends = new ArrayList<>();
+                        }
                         friends.add(model.getUserID());
                         ref.setValue(friends);
+                        Toast.makeText(getContext(), model.getDisplayName() + " ha sido añadido a tus amigos", Toast.LENGTH_SHORT).show();
+                        remove(model);
+                        notifyDataSetChanged();
                     }
 
                     @Override

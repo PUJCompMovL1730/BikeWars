@@ -17,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
@@ -70,9 +71,12 @@ public class FriendAdapter extends ArrayAdapter<dbObservable>{
                 ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        List<String> friends = dataSnapshot.getValue(List.class);
+                        GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {};
+                        List<String> friends = dataSnapshot.getValue(t);
                         friends.remove(model.getUserID());
                         ref.setValue(friends);
+                        remove(model);
+                        notifyDataSetChanged();
                     }
 
                     @Override
