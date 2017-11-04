@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -16,37 +17,55 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.edu.javeriana.bikewars.Adapters.FriendAdapter;
-import co.edu.javeriana.bikewars.Interfaces.FriendListener;
+import co.edu.javeriana.bikewars.Auxiliar.Constants;
+import co.edu.javeriana.bikewars.Logic.Entities.dbGroup;
 import co.edu.javeriana.bikewars.Logic.Entities.dbObservable;
-import co.edu.javeriana.bikewars.Logic.UserData;
+import co.edu.javeriana.bikewars.Logic.Entities.dbUser;
 
-public class FriendsLobby extends AppCompatActivity implements FriendListener{
+public class FriendsLobby extends AppCompatActivity{
 
-    private ListView list, groups;
-    private List<dbObservable> listData;
+    private ListView listViewFriends, listViewGroups;
+    private List<dbObservable> friendsList;
+    private List<String> groupsList;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends_lobby);
-        list = findViewById(R.id.friendsViewList);
-        groups = findViewById(R.id.friendsViewGroups);
-        UserData.getInstance().addFriendListener(this);
-        populateList(UserData.getInstance().getUser().getFriends());
+        listViewFriends = findViewById(R.id.friendsViewList);
+        listViewGroups = findViewById(R.id.friendsViewGroups);
     }
 
-    private void populateList(final List<String> friends){
-        listData = new ArrayList<>();
-        FirebaseDatabase.getInstance().getReference(UserData.observablesRoot).addListenerForSingleValueEvent(new ValueEventListener() {
+    private void populateList(dbUser user){
+        final List<String> friends = user.getFriends();
+        final List<String> groups = user.getGroups();
+        friendsList = new ArrayList<>();
+        groupsList = new ArrayList<>();
+        FirebaseDatabase.getInstance().getReference(Constants.observablesRoot).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     dbObservable friend = snapshot.getValue(dbObservable.class);
                     if(friends.contains(friend.getUserID())){
-                        listData.add(friend);
+                        friendsList.add(friend);
                     }
                 }
-                list.setAdapter(new FriendAdapter(getBaseContext(), R.layout.friend_layout, listData));
+                listViewFriends.setAdapter(new FriendAdapter(getBaseContext(), R.layout.friend_layout, friendsList));
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+        FirebaseDatabase.getInstance().getReference(Constants.groupsRoot).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    dbGroup group = snapshot.getValue(dbGroup.class);
+                    if(groups.contains(group.getGroupID())){
+                        groupsList.add(group.getName());
+                    }
+                }
+                listViewGroups.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, groupsList));
             }
 
             @Override
@@ -54,7 +73,20 @@ public class FriendsLobby extends AppCompatActivity implements FriendListener{
 
             }
         });
-        groups.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, UserData.getInstance().getUser().getGroups()));
+    }
+
+    @Override
+    protected void onResume() {
+        FirebaseDatabase.getInstance().getReference(Constants.usersRoot + mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                populateList(dataSnapshot.getValue(dbUser.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+        super.onResume();
     }
 
     public void newGroup(View view){
@@ -63,10 +95,5 @@ public class FriendsLobby extends AppCompatActivity implements FriendListener{
 
     public void searchFriends(View view){
         startActivity(new Intent(this, SearchFriendsView.class));
-    }
-
-    @Override
-    public void UpdateFriends(List<String> friends) {
-        populateList(friends);
     }
 }

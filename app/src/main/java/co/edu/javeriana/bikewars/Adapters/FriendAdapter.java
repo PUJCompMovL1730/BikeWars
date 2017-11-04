@@ -2,8 +2,6 @@ package co.edu.javeriana.bikewars.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -14,15 +12,18 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
 import co.edu.javeriana.bikewars.Auxiliar.Constants;
 import co.edu.javeriana.bikewars.ChatView;
 import co.edu.javeriana.bikewars.Logic.Entities.dbObservable;
-import co.edu.javeriana.bikewars.Logic.UserData;
 import co.edu.javeriana.bikewars.R;
 
 /**
@@ -43,25 +44,19 @@ public class FriendAdapter extends ArrayAdapter<dbObservable>{
                     R.layout.friend_layout, parent, false);
         }
         final ImageView photo = convertView.findViewById(R.id.friendPhoto);
-        final Bitmap[] photoBit = new Bitmap[1];
         TextView name = convertView.findViewById(R.id.friendName);
         ImageButton sendMessage = convertView.findViewById(R.id.friendSendMessage);
         ImageButton removeFriend = convertView.findViewById(R.id.friendRemove);
         final dbObservable model = getItem(position);
-        FirebaseStorage.getInstance().getReferenceFromUrl(model.getPhoto()).getBytes(Constants.MAXBYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                photoBit[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                photo.setImageBitmap(photoBit[0]);
-            }
-        });
+        photo.setImageResource(R.drawable.ic_account);
+        model.setContainer(photo);
         name.setText(model.getDisplayName());
         sendMessage.setImageResource(R.drawable.ic_envelope);
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent chatIntent = new Intent(getContext(), ChatView.class);
-                chatIntent.putExtra("photo", photoBit[0]);
+                chatIntent.putExtra("photo", model.getPhotoBmp());
                 chatIntent.putExtra("name", model.getDisplayName());
                 chatIntent.putExtra("UserID", model.getUserID());
                 getContext().startActivity(chatIntent);
@@ -71,7 +66,20 @@ public class FriendAdapter extends ArrayAdapter<dbObservable>{
         removeFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserData.getInstance().removeFriend(model.getUserID());
+                final DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.usersRoot + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/friends/");
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        List<String> friends = dataSnapshot.getValue(List.class);
+                        friends.remove(model.getUserID());
+                        ref.setValue(friends);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
         return convertView;

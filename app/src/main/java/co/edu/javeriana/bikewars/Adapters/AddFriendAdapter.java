@@ -2,7 +2,6 @@ package co.edu.javeriana.bikewars.Adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -13,13 +12,17 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
+import co.edu.javeriana.bikewars.Auxiliar.Constants;
 import co.edu.javeriana.bikewars.Logic.Entities.dbObservable;
-import co.edu.javeriana.bikewars.Logic.UserData;
 import co.edu.javeriana.bikewars.R;
 
 /**
@@ -44,19 +47,27 @@ public class AddFriendAdapter extends ArrayAdapter<dbObservable>{
         TextView name = convertView.findViewById(R.id.addFriendName);
         ImageButton addFriend = convertView.findViewById(R.id.addFriendAdd);
         final dbObservable model = getItem(position);
-        FirebaseStorage.getInstance().getReferenceFromUrl(model.getPhoto()).getBytes(1024*1024).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                photoBit[0] = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                photo.setImageBitmap(photoBit[0]);
-            }
-        });
+        photo.setImageResource(R.drawable.ic_account);
+        model.setContainer(photo);
         name.setText(model.getDisplayName());
         addFriend.setImageResource(R.drawable.add);
         addFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserData.getInstance().addFriend(model.getUserID());
+                final DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.usersRoot + FirebaseAuth.getInstance().getCurrentUser().getUid() + "/friends/");
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        List<String> friends = dataSnapshot.getValue(List.class);
+                        friends.add(model.getUserID());
+                        ref.setValue(friends);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
         return convertView;

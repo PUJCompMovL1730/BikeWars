@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import co.edu.javeriana.bikewars.Auxiliar.Constants;
+
 public class SelectionView extends AppCompatActivity {
 
     private PermissionListener permisos;
@@ -31,10 +33,6 @@ public class SelectionView extends AppCompatActivity {
     private ListView resultados;
     private Geocoder mGeocoder;
     private Map<String, Address> resultadosLatLon;
-    public static final double lowerLeftLatitude = 1.396967;
-    public static final double lowerLeftLongitude= -78.903968;
-    public static final double upperRightLatitude= 11.983639;
-    public static final double upperRigthLongitude= -71.869905;
     private Address seleccionada;
     private View selecView;
 
@@ -53,10 +51,10 @@ public class SelectionView extends AppCompatActivity {
                     try {
                         List<Address> addresses = mGeocoder.getFromLocationName(
                                 addressString, 5,
-                                lowerLeftLatitude,
-                                lowerLeftLongitude,
-                                upperRightLatitude,
-                                upperRigthLongitude);
+                                Constants.lowerLeftLatitude,
+                                Constants.lowerLeftLongitude,
+                                Constants.upperRightLatitude,
+                                Constants.upperRigthLongitude);
                         if (addresses != null && !addresses.isEmpty()) {
                             String[] resultadosTxt = new String[addresses.size()];
                             resultadosLatLon = new HashMap<>();

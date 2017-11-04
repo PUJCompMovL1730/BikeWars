@@ -9,6 +9,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.location.Location;
+import android.widget.ImageView;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -23,7 +24,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 
 import co.edu.javeriana.bikewars.Auxiliar.Constants;
-import co.edu.javeriana.bikewars.R;
 
 /**
  * Created by Todesser on 29/10/2017.
@@ -82,6 +82,10 @@ public class dbObservable {
         this.longitude = longitude;
     }
 
+    public Bitmap getPhotoBmp() {
+        return photoBmp;
+    }
+
     public dbObservable(String displayName, double latitude, double longitude, String photo) {
         this.displayName = displayName;
         this.latitude = latitude;
@@ -94,19 +98,20 @@ public class dbObservable {
 
     public dbObservable(String userID, Marker marker){
         this.marker = marker;
-        ref = FirebaseDatabase.getInstance().getReference(R.string.observablesRoot+userID);
+        ref = FirebaseDatabase.getInstance().getReference(Constants.observablesRoot + userID);
         setListener();
     }
 
     public dbObservable(FirebaseUser user, Location location, Marker marker){
         this.marker = marker;
+        userID = user.getUid();
         displayName = user.getDisplayName();
         marker.setTitle(displayName);
         photo = user.getPhotoUrl().toString();
         latitude = location.getLatitude();
         longitude = location.getLongitude();
-        ref = FirebaseDatabase.getInstance().getReference(R.string.observablesRoot+user.getUid());
-        FirebaseDatabase.getInstance().getReference(user.getUid()).setValue(this);
+        ref = FirebaseDatabase.getInstance().getReference(Constants.observablesRoot + user.getUid());
+        ref.setValue(this);
         downloadPhoto();
     }
 
@@ -170,11 +175,32 @@ public class dbObservable {
         });
     }
 
+    public void setContainer(ImageView container){
+        if(photoBmp==null){
+            downloadPhoto(container);
+        }else{
+            container.setImageBitmap(photoBmp);
+        }
+    }
+
+    private void downloadPhoto(final ImageView container){
+        FirebaseStorage.getInstance().getReferenceFromUrl(photo).getBytes(Constants.MAXBYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                photoBmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                container.setImageBitmap(photoBmp);
+            }
+        });
+    }
+
     private void setListener(){
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 dbObservable returned = dataSnapshot.getValue(dbObservable.class);
+                if(userID != returned.getUserID()){
+                    userID = returned.getUserID();
+                }
                 if(displayName!=returned.getDisplayName()) {
                     displayName = returned.getDisplayName();
                     if(marker!=null){
