@@ -105,4 +105,18 @@ public class dbUser {
     public void setCommercialMarkers(List<String> commercialMarkers) {
         this.commercialMarkers = commercialMarkers;
     }
+
+    @Override
+    public String toString() {
+        return "dbUser{" +
+                "userID='" + userID + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", photo='" + photo + '\'' +
+                ", friends=" + friends +
+                ", routes=" + routes +
+                ", groups=" + groups +
+                ", historic=" + historic +
+                ", commercialMarkers=" + commercialMarkers +
+                '}';
+    }
 }

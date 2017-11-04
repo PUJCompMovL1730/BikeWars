@@ -1,5 +1,8 @@
 package co.edu.javeriana.bikewars.Logic.Entities;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+
 /**
  * Created by Todesser on 29/10/2017.
  */
@@ -13,6 +16,7 @@ public class dbCommercialMarker {
     private String url;
     private double latitude;
     private double longitude;
+    private Marker marker;
 
     public String getMarkerID() {
         return markerID;
@@ -92,5 +96,22 @@ public class dbCommercialMarker {
 
     public dbCommercialMarker() {
 
+    }
+
+    public void setMarker(Marker marker){
+        //TODO: mejorar la presentacion y el diseño grafico de los marcadores
+        this.marker = marker;
+        marker.setPosition(new LatLng(latitude, longitude));
+        marker.setTitle(title);
+        marker.setSnippet(description);
+        marker.setVisible(true);
+    }
+
+    public void uptdateMarker(dbCommercialMarker newMarker){
+        newMarker.setMarker(marker);
+    }
+
+    public void removeMarker(){
+        marker.remove();
     }
 }

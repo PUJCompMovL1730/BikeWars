@@ -8,6 +8,7 @@ import java.util.List;
 
 public class dbGroup {
     private String groupID;
+    private String name;
     private List<String> members;
 
     public String getGroupID() {
@@ -24,6 +25,14 @@ public class dbGroup {
 
     public void setMembers(List<String> members) {
         this.members = members;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public dbGroup(String groupID, List<String> members) {
