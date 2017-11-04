@@ -62,7 +62,7 @@ public class ChatView extends AppCompatActivity {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.mailBoxRoot);
         final ChatAdapter adapter = new ChatAdapter(this, R.layout.mail_layout, mailList);
         chatList.setAdapter(adapter);
-        ref.addChildEventListener(new ChildEventListener() {
+        ref.child(userID + "/" + friendID + "/").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 dbMail mail = dataSnapshot.getValue(dbMail.class);
@@ -97,7 +97,11 @@ public class ChatView extends AppCompatActivity {
 
     public void sendMessage(View v){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.mailBoxRoot);
-        ref.push().setValue(new dbMail(userID, friendID, message.getText().toString(), System.currentTimeMillis()));
+        DatabaseReference sender = ref.child("/"+userID+"/"+friendID+"/");
+        DatabaseReference receiver = ref.child("/"+friendID+"/"+userID+"/");
+        dbMail mail = new dbMail(userID, friendID, message.getText().toString(), System.currentTimeMillis());
+        sender.push().setValue(mail);
+        receiver.push().setValue(mail);
         message.setText("");
     }
 }
