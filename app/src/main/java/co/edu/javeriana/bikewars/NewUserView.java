@@ -39,10 +39,8 @@ import co.edu.javeriana.bikewars.Logic.UserData;
 public class NewUserView extends AppCompatActivity {
 
     private Bitmap photoBitMap = null;
-    private ImageView img = findViewById(R.id.newUserPhoto);
-    private EditText name = findViewById(R.id.newUserName),
-            email = findViewById(R.id.newUserEmail),
-            pass = findViewById(R.id.newUserPass);
+    private ImageView img;
+    private EditText name, email, pass;
     private Pattern emailRegex;
     private FirebaseAuth mAuth;
     private FirebaseStorage bucket;
@@ -53,9 +51,13 @@ public class NewUserView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_user_view);
-        emailRegex = Pattern.compile("\\w+@\\w+(.[a-z])+");
+        emailRegex = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
         mAuth = FirebaseAuth.getInstance();
         bucket = FirebaseStorage.getInstance();
+        img = findViewById(R.id.newUserPhoto);
+        name = findViewById(R.id.newUserName);
+        email = findViewById(R.id.newUserEmail);
+        pass = findViewById(R.id.newUserPass);
     }
 
     public void createUserBtn(View view){
@@ -63,8 +65,8 @@ public class NewUserView extends AppCompatActivity {
             Toast.makeText(this, "Debe seleccionar una foto de la galeria o tomar una nueva", Toast.LENGTH_SHORT).show();
             return;
         }
-        String emailTxt = email.getText().toString();
-        String passTxt = pass.getText().toString();
+        String emailTxt = email.getText().toString().trim();
+        String passTxt = pass.getText().toString().trim();
         Boolean validMail = emailRegex.matcher(emailTxt).matches();
         if(validMail){
             mAuth.createUserWithEmailAndPassword(emailTxt, passTxt).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
