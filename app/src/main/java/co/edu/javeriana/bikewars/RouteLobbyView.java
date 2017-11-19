@@ -45,6 +45,7 @@ import co.edu.javeriana.bikewars.Auxiliar.Constants;
 import co.edu.javeriana.bikewars.Logic.Entities.dbCommercialMarker;
 import co.edu.javeriana.bikewars.Logic.Entities.dbObservable;
 import co.edu.javeriana.bikewars.Logic.MapData;
+import co.edu.javeriana.bikewars.Services.MailBox;
 
 public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
@@ -100,6 +101,10 @@ public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallb
                 .setDeniedMessage("La aplicacion necesita permisos de ubicacion")
                 .setPermissions(android.Manifest.permission.ACCESS_FINE_LOCATION)
                 .check();
+        Intent serviceIntent = new Intent(this, MailBox.class);
+        serviceIntent.putExtra("userID", mAuth.getCurrentUser().getUid());
+        serviceIntent.putExtra("icon", R.drawable.ic_envelope);
+        startService(serviceIntent);
     }
 
     public void newRouteLaunch(View view) {
@@ -125,6 +130,7 @@ public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallb
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        stopService(new Intent(this, MailBox.class));
     }
 
     @Override
