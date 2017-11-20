@@ -3,7 +3,10 @@ package co.edu.javeriana.bikewars;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +17,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.URLUtil;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -28,12 +35,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -47,10 +56,13 @@ import co.edu.javeriana.bikewars.Logic.Entities.dbObservable;
 import co.edu.javeriana.bikewars.Logic.MapData;
 import co.edu.javeriana.bikewars.Services.MailBox;
 
-public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnMapLongClickListener {
 
     //Static Context
     public static Context context;
+
+    //Codex
+    private final int NEW_MARKER_ID = 20;
 
     private MapFragment mapFragment;
     private GoogleMap map;
@@ -174,6 +186,64 @@ public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallb
                 //TODO Manejar el error en caso de que se cancele la escucha de los cambios en los marcadores comerciales
             }
         });
+        map.setOnMapLongClickListener(this);
+        map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(final Marker marker) {
+                if (marker.getTag()!=null) {
+                    final dbCommercialMarker markerTag = (dbCommercialMarker) marker.getTag();
+                    View v = getLayoutInflater().inflate(R.layout.marker_layout, null);
+                    final ImageView image = v.findViewById(R.id.markerImage);
+                    TextView title = v.findViewById(R.id.markerTitle);
+                    EditText desc = v.findViewById(R.id.markerDesc);
+                    if(markerTag.getPhoto()!=null){
+                        Bitmap imagePhoto = Constants.photoBank.get(markerTag.getPhoto());
+                        if (imagePhoto==null) {
+                            FirebaseStorage.getInstance().getReference(markerTag.getPhoto()).getBytes(Constants.MAXBYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                @Override
+                                public void onSuccess(byte[] bytes) {
+                                    Bitmap downloadedPhoto = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                    image.setImageBitmap(downloadedPhoto);
+                                    Constants.photoBank.put(markerTag.getPhoto(), downloadedPhoto);
+                                    marker.showInfoWindow();
+                                }
+                            });
+                        }else{
+                            image.setImageBitmap(imagePhoto);
+                        }
+                    }
+                    title.setText(markerTag.getTitle());
+                    desc.setText(markerTag.getDescription());
+                    return v;
+                }else{
+                    return null;
+                }
+            }
+        });
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                if (marker.getTag()!=null) {
+                    final dbCommercialMarker markerTag = (dbCommercialMarker) marker.getTag();
+                    if (markerTag.getUrl()!=null) {
+                        if (URLUtil.isValidUrl(markerTag.getUrl())) {
+                            Intent browseIntent = new Intent(Intent.ACTION_VIEW);
+                            browseIntent.setData(Uri.parse(markerTag.getUrl()));
+                            startActivity(browseIntent);
+                        }else{
+                            Toast.makeText(RouteLobbyView.this, "Url invalida", Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        Toast.makeText(RouteLobbyView.this, "Marcador sin Url", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -236,6 +306,29 @@ public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallb
             dbUbication = new dbObservable(mAuth.getCurrentUser(), location,ubication);
         }else{
             dbUbication.updateLocation(latlng);
+        }
+    }
+
+    @Override
+    public void onMapLongClick(LatLng latLng) {
+        Intent newMarkerIntent = new Intent(this, NewMarker.class);
+        newMarkerIntent.putExtra("lat", latLng.latitude);
+        newMarkerIntent.putExtra("lon", latLng.longitude);
+        startActivityForResult(newMarkerIntent, NEW_MARKER_ID);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case NEW_MARKER_ID:
+                if(resultCode == 1){
+                    dbCommercialMarker newMarker = (dbCommercialMarker) data.getSerializableExtra("newMarker");
+                    newMarker.setMarker(map.addMarker(new MarkerOptions().position(Constants.bogotaLocation).visible(false)));
+                    Toast.makeText(this, "Marcador creado correctamente", Toast.LENGTH_SHORT).show();
+                }else if(resultCode == 0){
+                    Toast.makeText(this, "No se ha creado un nuevo marcador.", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
 }

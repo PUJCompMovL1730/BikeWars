@@ -3,11 +3,13 @@ package co.edu.javeriana.bikewars.Logic.Entities;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
+import java.io.Serializable;
+
 /**
  * Created by Todesser on 29/10/2017.
  */
 
-public class dbCommercialMarker {
+public class dbCommercialMarker implements Serializable{
     private String markerID;
     private String ownerID;
     private String title;
@@ -16,7 +18,16 @@ public class dbCommercialMarker {
     private String url;
     private double latitude;
     private double longitude;
+    private String photo;
     private Marker marker;
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
 
     public String getMarkerID() {
         return markerID;
@@ -82,7 +93,7 @@ public class dbCommercialMarker {
         this.longitude = longitude;
     }
 
-    public dbCommercialMarker(String markerID, String ownerID, String title, String description, String validUntil, String url, double latitude, double longitude) {
+    public dbCommercialMarker(String markerID, String ownerID, String title, String description, String validUntil, String url, double latitude, double longitude, String photo) {
 
         this.markerID = markerID;
         this.ownerID = ownerID;
@@ -92,6 +103,7 @@ public class dbCommercialMarker {
         this.url = url;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.photo = photo;
     }
 
     public dbCommercialMarker() {
@@ -104,6 +116,7 @@ public class dbCommercialMarker {
         marker.setPosition(new LatLng(latitude, longitude));
         marker.setTitle(title);
         marker.setSnippet(description);
+        marker.setTag(this);
         marker.setVisible(true);
     }
 

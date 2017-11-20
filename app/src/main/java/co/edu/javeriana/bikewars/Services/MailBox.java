@@ -160,7 +160,7 @@ public class MailBox extends Service {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         mailRef.removeEventListener(mailListener);
+        super.onDestroy();
     }
 }

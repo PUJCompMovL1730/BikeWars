@@ -48,7 +48,7 @@ public class FriendAdapter extends ArrayAdapter<dbObservable>{
             convertView = inflater.inflate(
                     R.layout.friend_layout, parent, false);
         }
-        final ImageView photo = convertView.findViewById(R.id.friendPhoto);
+        final ImageView photo = convertView.findViewById(R.id.competitorPhoto);
         TextView name = convertView.findViewById(R.id.friendName);
         ImageButton sendMessage = convertView.findViewById(R.id.friendSendMessage);
         ImageButton removeFriend = convertView.findViewById(R.id.friendRemove);

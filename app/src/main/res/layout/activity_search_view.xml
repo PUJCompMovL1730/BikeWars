@@ -37,7 +37,7 @@
                 android:layout_weight=".8"
                 android:ems="10"
                 android:gravity="start"
-                android:hint="Ingrese el nombre de la ruta"
+                android:hint="Ingrese el name de la ruta"
                 android:inputType="textPersonName"
                 android:textAlignment="textStart" />
 

@@ -13,7 +13,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/newUserMedia"
+        app:layout_constraintBottom_toTopOf="@+id/newCommercialMedia"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -51,14 +51,14 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/newUserMedia"
+        android:id="@+id/newCommercialMedia"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/newUserActions"
+        app:layout_constraintBottom_toTopOf="@+id/newMarkerActions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -97,7 +97,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/newUserActions"
+        android:id="@+id/newMarkerActions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

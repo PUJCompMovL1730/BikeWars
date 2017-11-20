@@ -18,7 +18,7 @@
         app:srcCompat="@drawable/ic_account" />
 
     <TextView
-        android:id="@+id/friendName"
+        android:id="@+id/competitorName"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_gravity="center_vertical"
@@ -33,26 +33,20 @@
         app:layout_constraintStart_toEndOf="@+id/competitorPhoto"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/friendSendMessage"
-        android:layout_width="50dp"
+    <TextView
+        android:id="@+id/competitorTime"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
+        android:layout_gravity="center_vertical"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:layout_weight="1"
-        app:layout_constraintEnd_toStartOf="@+id/friendRemove"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_envelope" />
-
-    <ImageButton
-        android:id="@+id/friendRemove"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:text="TextView"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/cancel" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

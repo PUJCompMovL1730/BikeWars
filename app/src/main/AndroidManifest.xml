@@ -28,8 +28,12 @@
         <activity android:name=".MainView" />
         <activity android:name=".ConfigView" />
         <activity android:name=".ProfileView" />
-        <activity android:name=".RouteLobbyView" android:screenOrientation="portrait"/>
-        <activity android:name=".NewRouteView" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".RouteLobbyView"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".NewRouteView"
+            android:screenOrientation="portrait" />
         <activity android:name=".SelectionView" />
         <activity android:name=".HistoricView" />
         <activity android:name=".SearchView" />
@@ -41,8 +45,12 @@
         <activity android:name=".SocialView" />
         <activity android:name=".RaceView" />
         <activity android:name=".NewRaceView" />
-        <activity android:name=".ExpectView"></activity>
-        <service android:name=".Services.MailBox"></service>
+        <activity android:name=".ExpectView" />
+
+        <service android:name=".Services.MailBox" />
+
+        <activity android:name=".NewMarker" />
+        <activity android:name=".NewCommercialMarker"></activity>
     </application>
 
 </manifest>
