@@ -59,7 +59,7 @@ public class ChatView extends AppCompatActivity {
         });
         friendID = (String)intent.getExtras().get("userID");
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.mailBoxRoot);
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.mailBoxRoot);
         final ChatAdapter adapter = new ChatAdapter(this, R.layout.mail_layout, mailList);
         chatList.setAdapter(adapter);
         ref.child(userID + "/" + friendID + "/").addChildEventListener(new ChildEventListener() {
@@ -67,6 +67,8 @@ public class ChatView extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 dbMail mail = dataSnapshot.getValue(dbMail.class);
                 if(mail.getFrom().equals(userID) && mail.getTo().equals(friendID) || mail.getFrom().equals(friendID) && mail.getTo().equals(userID)){
+                    mail.setProcessed(true);
+                    ref.child(userID + "/" + friendID + "/" + "/" + dataSnapshot.getKey()).setValue(mail);
                     mailList.add(mail);
                     adapter.notifyDataSetChanged();
                 }
@@ -97,11 +99,12 @@ public class ChatView extends AppCompatActivity {
 
     public void sendMessage(View v){
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(Constants.mailBoxRoot);
-        DatabaseReference sender = ref.child("/"+userID+"/"+friendID+"/");
-        DatabaseReference receiver = ref.child("/"+friendID+"/"+userID+"/");
-        dbMail mail = new dbMail(userID, friendID, message.getText().toString(), System.currentTimeMillis());
-        sender.push().setValue(mail);
-        receiver.push().setValue(mail);
+        dbMail mail = new dbMail(userID, friendID, message.getText().toString(), System.currentTimeMillis(), false);
+        DatabaseReference sender = ref.child("/"+userID+"/"+friendID+"/"+mail.getDate());
+        DatabaseReference receiver = ref.child("/"+friendID+"/"+userID+"/"+mail.getDate());
+        receiver.setValue(mail);
+        mail.setProcessed(true);
+        sender.setValue(mail);
         message.setText("");
     }
 }

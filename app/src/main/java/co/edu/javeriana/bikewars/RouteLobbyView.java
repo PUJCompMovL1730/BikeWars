@@ -60,6 +60,7 @@ public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallb
     private dbObservable dbUbication;
     private FloatingActionButton endBtn;
     private Map<String, dbCommercialMarker> markers;
+    private Intent serviceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +102,7 @@ public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallb
                 .setDeniedMessage("La aplicacion necesita permisos de ubicacion")
                 .setPermissions(android.Manifest.permission.ACCESS_FINE_LOCATION)
                 .check();
-        Intent serviceIntent = new Intent(this, MailBox.class);
+        serviceIntent = new Intent(this, MailBox.class);
         serviceIntent.putExtra("userID", mAuth.getCurrentUser().getUid());
         serviceIntent.putExtra("icon", R.drawable.ic_envelope);
         startService(serviceIntent);
