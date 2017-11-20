@@ -51,7 +51,7 @@ public class FriendAdapter extends ArrayAdapter<dbObservable>{
         final ImageView photo = convertView.findViewById(R.id.competitorPhoto);
         TextView name = convertView.findViewById(R.id.friendName);
         ImageButton sendMessage = convertView.findViewById(R.id.friendSendMessage);
-        ImageButton removeFriend = convertView.findViewById(R.id.friendRemove);
+        ImageButton removeFriend = convertView.findViewById(R.id.markerManRemove);
         final dbObservable model = getItem(position);
         photo.setImageResource(R.drawable.ic_account);
         model.setContainer(photo);

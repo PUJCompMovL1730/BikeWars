@@ -264,6 +264,10 @@ public class RouteLobbyView extends AppCompatActivity implements OnMapReadyCallb
             case R.id.mainMenuConfig:
                 // TODO: 27/10/2017 Lanzamiento de configuracion.
                 return true;
+            case R.id.mainMenuMarkers:
+                Intent markersIntent = new Intent(this, MarkerManager.class);
+                startActivity(markersIntent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

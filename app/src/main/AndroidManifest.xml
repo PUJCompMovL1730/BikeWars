@@ -50,7 +50,8 @@
         <service android:name=".Services.MailBox" />
 
         <activity android:name=".NewMarker" />
-        <activity android:name=".NewCommercialMarker"></activity>
+        <activity android:name=".NewCommercialMarker" />
+        <activity android:name=".MarkerManager"></activity>
     </application>
 
 </manifest>
