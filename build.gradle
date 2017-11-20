@@ -15,9 +15,12 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenLocal()
+        mavenCentral()
         jcenter()
         google()
         maven { url 'https://oss.jfrog.org/libs-snapshot' }
+        maven { url 'https://maven.fabric.io/public' }
     }
 }
 

@@ -1,8 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
+
     compileSdkVersion 27
     buildToolsVersion "27.0.0"
+    dataBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId "co.edu.javeriana.bikewars"
         minSdkVersion 21
@@ -47,6 +51,23 @@ dependencies {
     compile 'io.reactivex.rxjava2:rxjava:2.1.5'
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.firebaseui:firebase-ui-database:1.2.0'
+
+    //Redes Sociales
+    compile 'com.twitter.sdk.android:twitter:3.1.1'
+    compile 'com.twitter.sdk.android:twitter-core:3.1.1'
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+
+    //Preferencias y configuracion
+    compile 'com.android.support:preference-v7:27.0.1'
+
+    //Diseño
+    compile 'com.android.support:design:27.0.0'
+    compile 'com.github.medyo:fancybuttons:1.8'
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.github.manuelpeinado.fadingactionbar:fadingactionbar:3.1.2'
+    compile 'com.android.support:support-v4:27.0.0'
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
 
     testCompile 'junit:junit:4.12'
 }
